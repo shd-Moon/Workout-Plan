@@ -1,0 +1,25 @@
+{
+  "name": "PPL-HIIT Hybrid Workout",
+  "short_name": "PPL-HIIT Workout",
+  "description": "PPL-HIIT Workout Plan",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#061930",
+  "theme_color": "#1D3456",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "dumbell-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "dumbell-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "fitness", "lifestyle"]
+} 

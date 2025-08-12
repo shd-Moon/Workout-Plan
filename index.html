@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PPL-HIIT Hybrid Workout</title>
+  <title>PPL-HIIT Workout</title>
   
   <!-- PWA Meta Tags -->
-  <meta name="description" content="PPL-HIIT Hybrid Workout Plan">
+  <meta name="description" content="PPL-HIIT Workout Plan">
   <meta name="theme-color" content="#1D3456">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -17,7 +17,7 @@
     {
       "name": "PPL-HIIT Hybrid Workout",
       "short_name": "PPL-HIIT Workout",
-      "description": "PPL-HIIT Hybrid Workout Plan",
+      "description": "PPL-HIIT Workout Plan",
       "start_url": "/",
       "display": "standalone",
       "background_color": "#061930",
@@ -313,7 +313,7 @@
 <body>
   <div class="container">
     <button id="langBtn" class="lang-btn" onclick="toggleLang()">EN</button>
-    <h1 id="main-title">PPL-HIIT Hybrid Workout (2 sessions/week)</h1>
+    <h1 id="main-title">PPL-HIIT Hybrid Workout</h1>
 
     <!-- Saturday -->
     <div class="day-card">
@@ -544,7 +544,7 @@
       document.body.classList.toggle('en', lang === 'en');
       // switch main title
       document.getElementById('main-title').textContent = 
-        lang === 'fa' ? 'PPL-HIIT Hybrid Workout (2 sessions/week)' : 'PPL-HIIT Hybrid Workout (2 sessions/week)';
+        lang === 'fa' ? 'PPL-HIIT Hybrid Workout' : 'PPL-HIIT Hybrid Workout';
       // switch button text
       btn.textContent = lang === 'fa' ? 'EN' : 'PE';
       // switch every element with data-fa / data-en

@@ -1,7 +1,7 @@
 {
   "name": "PPL-HIIT Hybrid Workout",
   "short_name": "PPL-HIIT Workout",
-  "description": "PPL-HIIT Hybrid Workout Plan",
+  "description": "PPL-HIIT Workout Plan",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#061930",

@@ -11,6 +11,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PPL-HIIT Workout">
+  
+  <!-- اضافه شده: لینک به manifest.json -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- اضافه شده: آیکون‌ها برای مرورگرهای مختلف -->
+  <link rel="icon" href="icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="msapplication-square150x150logo" content="icon-192.png">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -368,8 +376,15 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         const swCode = `
-          const CACHE_NAME = 'workout-plan-v2';
-          const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
+          const CACHE_NAME = 'workout-plan-v3';
+          // اضافه شدن manifest و آیکون‌ها
+          const ASSETS = [
+            '/',
+            '/index.html',
+            '/manifest.json',
+            '/icon-192.png',
+            '/icon-512.png'
+          ];
           self.addEventListener('install', (e) => {
             e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
           });

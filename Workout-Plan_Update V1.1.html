@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PPL-HIIT Workout</title>
+
+  <!-- PWA Meta Tags -->
+  <meta name="description" content="PPL-HIIT Workout Plan">
+  <meta name="theme-color" content="#1D3456">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PPL-HIIT Workout">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #061930;
+      --card: #12253F;
+      --accent: #1D3456;
+      --text: #C3C3C3;
+      --muted: #7C8594;
+      --section-bg: rgba(255,255,255,.08);
+      --section-border: #4A90E2;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;
+      display:flex;justify-content:center;padding:5rem 1.5rem 3rem;
+      transition:font-family .3s,direction .3s,text-align .3s;
+      direction:ltr;
+    }
+    body.fa{direction:rtl;font-family:'Vazirmatn',sans-serif}
+    .container{width:100%;max-width:680px;display:flex;flex-direction:column;gap:1.5rem;position:relative;text-align:left}
+    body.fa .container{text-align:right}
+
+    /* دکمه تغییر زبان همیشه بالا-راست */
+    .lang-btn{
+      position:absolute;top:-4rem;right:0;background:var(--accent);color:var(--text);
+      border:none;padding:.4rem .9rem;border-radius:6px;font-size:.9rem;cursor:pointer;
+      transition:transform .2s;left:auto !important
+    }
+    .lang-btn:hover{transform:scale(1.05)}
+
+    h1{font-size:1.8rem;font-weight:600;text-align:center;letter-spacing:1px}
+    .day-card{background:var(--card);border-radius:12px;padding:1.5rem 2rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:0 4px 12px rgba(0,0,0,.25);transition:transform .3s,box-shadow .3s}
+    .day-card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,.35)}
+    .day-header{display:flex;justify-content:space-between;align-items:center}
+    .day-title{font-size:1.3rem;font-weight:600}
+    .expand-btn{
+      background:transparent;border:none;font-size:1.4rem;cursor:pointer;
+      transition:transform .4s;color:#c3c3c3;
+    }
+    .expand-btn:hover{
+      transform:rotate(90deg) scale(1.1);
+      color:#c3c3c3;
+    }
+    .expand-btn.active{
+      transform:rotate(180deg);
+      color:#c3c3c3;
+    }
+    .task-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+    .task-list li{font-size:1rem}
+    .task-list li strong{color:var(--muted);font-weight:400}
+    .workout-details{max-height:0;overflow:hidden;transition:max-height .6s,padding .6s,margin .6s;background:var(--accent);border-radius:8px;margin-top:0;padding:0 1rem}
+    .workout-details.active{max-height:2000px;margin-top:1rem;padding:1.5rem}
+    .workout-section{margin-bottom:1.5rem}
+    .workout-title{font-size:1.1rem;font-weight:600;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--muted)}
+    .exercise-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+    .exercise-item{font-size:.95rem;padding:.5rem;background:rgba(255,255,255,.05);border-radius:6px;border-left:3px solid var(--muted)}
+    body.fa .exercise-item{border-left:none;border-right:3px solid var(--muted)}
+    .hiit-section,.running-section,.rest-section{margin-top:1rem;padding:1rem;background:var(--section-bg);border-radius:8px;border-left:4px solid var(--section-border)}
+    body.fa .hiit-section,body.fa .running-section,body.fa .rest-section{border-left:none;border-right:4px solid var(--section-border)}
+    .hiit-title,.running-title,.rest-title{font-weight:600;color:var(--section-border);margin-bottom:.5rem}
+    .install-btn{position:fixed;bottom:20px;right:20px;background:var(--accent);color:var(--text);border:none;padding:12px 20px;border-radius:25px;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3);z-index:1000;transition:transform .2s}
+    .install-btn:hover{transform:scale(1.05)}
+    body.fa .install-btn{right:auto;left:20px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button id="langBtn" class="lang-btn" onclick="toggleLang()">Eng</button>
+    <h1 id="main-title">PPL-HIIT Hybrid Workout</h1>
+
+    <!-- Saturday -->
+    <div class="day-card">
+      <div class="day-header">
+        <div class="day-title" data-en="Saturday" data-fa="شنبه">Saturday</div>
+        <button class="expand-btn" onclick="toggleWorkoutDetails('saturday')">></button>
+      </div>
+      <ul class="task-list">
+        <li><strong data-en="Morning:" data-fa="صبح:">Morning:</strong> <span data-en="Push + 5 min HIIT" data-fa="Push + HIIT 5 دقیقه">Push + 5 min HIIT</span></li>
+      </ul>
+      <div id="saturday" class="workout-details">
+        <div class="workout-section">
+          <div class="workout-title" data-en="Main Workout" data-fa="تمرین اصلی">Main Workout</div>
+          <ul class="exercise-list">
+            <li class="exercise-item"><strong>1.</strong> Dumbbell Floor Press – 3×(8–12)</li>
+            <li class="exercise-item"><strong>2.</strong> Seated Dumbbell Shoulder Press – 3×(8–12)</li>
+            <li class="exercise-item"><strong>3.</strong> Bench-Supported Chair Dip – 3×(10–12)</li>
+            <li class="exercise-item"><strong>4.</strong> Assisted Pistol Squat – 3×8 <span data-en="each leg" data-fa="هر پا">each leg</span></li>
+          </ul>
+          <div class="hiit-section">
+            <div class="hiit-title" data-en="HIIT (5 minutes)" data-fa="HIIT 5 دقیقه">HIIT (5 minutes)</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="Jump Squats: 20s max effort → 40s rest (3x)" data-fa="Jump Squats: 20s حداکثر توان → 40s استراحت (3x)">Jump Squats: 20s max effort → 40s rest (3x)</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Mountain Climbers: 20s max effort → 40s rest (3x)" data-fa="Mountain Climbers: 20s حداکثر توان → 40s استراحت (3x)">Mountain Climbers: 20s max effort → 40s rest (3x)</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sunday -->
+    <div class="day-card">
+      <div class="day-header">
+        <div class="day-title" data-en="Sunday" data-fa="یک‌شنبه">Sunday</div>
+        <button class="expand-btn" onclick="toggleWorkoutDetails('sunday')">></button>
+      </div>
+      <ul class="task-list">
+        <li><strong data-en="Morning:" data-fa="صبح:">Morning:</strong> <span data-en="Pull + 5 min HIIT" data-fa="Pull + HIIT 5 دقیقه">Pull + 5 min HIIT</span></li>
+        <li><strong data-en="Evening:" data-fa="عصر:">Evening:</strong> <span data-en="Speed/Explosive Running" data-fa="دویدن سرعت/انفجار">Speed/Explosive Running</span></li>
+      </ul>
+      <div id="sunday" class="workout-details">
+        <div class="workout-section">
+          <div class="workout-title" data-en="Morning - Main Workout" data-fa="صبح - تمرین اصلی">Morning - Main Workout</div>
+          <ul class="exercise-list">
+            <li class="exercise-item"><strong>1.</strong> Pull-Ups (Pronated Grip) – 3×(6–10)</li>
+            <li class="exercise-item"><strong>2.</strong> Single-Arm Dumbbell Row – 3×(10–12) <span data-en="each side" data-fa="هر طرف">each side</span></li>
+            <li class="exercise-item"><strong>3.</strong> Hammer Curl – 3×(10–12)</li>
+            <li class="exercise-item"><strong>4.</strong> Dumbbell Pullover – 3×12</li>
+          </ul>
+          <div class="hiit-section">
+            <div class="hiit-title" data-en="HIIT (5 minutes)" data-fa="HIIT 5 دقیقه">HIIT (5 minutes)</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="Burpees: 20s max effort → 40s rest (3x)" data-fa="Burpees: 20s حداکثر توان → 40s استراحت (3x)">Burpees: 20s max effort → 40s rest (3x)</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Jumping Jacks: 20s fast → 40s rest (3x)" data-fa="Jumping Jacks: 20s سریع → 40s استراحت (3x)">Jumping Jacks: 20s fast → 40s rest (3x)</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="workout-section">
+          <div class="workout-title" data-en="Evening - Speed/Explosive Running" data-fa="عصر - دویدن سرعت/انفجار">Evening - Speed/Explosive Running</div>
+          <div class="running-section">
+            <div class="running-title" data-en="Warm-up" data-fa="گرم‌کردن">Warm-up</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="3 min slow run" data-fa="۳ دقیقه دویدن آرام">3 min slow run</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Walking Lunges × 20 steps" data-fa="لانج راه‌رفته × ۲۰ قدم">Walking Lunges × 20 steps</span></li>
+              <li class="exercise-item"><strong>3.</strong> <span data-en="High Knees × 20 steps" data-fa="High Knees × ۲۰ قدم">High Knees × 20 steps</span></li>
+              <li class="exercise-item"><strong>4.</strong> <span data-en="Jump Squats × 10" data-fa="اسکوات پرشی × ۱۰">Jump Squats × 10</span></li>
+            </ul>
+          </div>
+          <div class="running-section">
+            <div class="running-title" data-en="Main Workout" data-fa="تمرین اصلی">Main Workout</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="30m explosive run × 8" data-fa="دوی ۳۰ متری انفجاری × ۸">30m explosive run × 8</span> <span data-en="(120s rest between sets)" data-fa="(استراحت ۱۲۰s بین دورها)">(120s rest between sets)</span></li>
+            </ul>
+          </div>
+          <div class="running-section">
+            <div class="running-title" data-en="Cool-down" data-fa="سردکردن">Cool-down</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="3 min walk" data-fa="۳ دقیقه پیاده‌روی">3 min walk</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Hamstring stretch (30s each leg) × 2" data-fa="کشش همسترینگ (۳۰s هر پا) × ۲">Hamstring stretch (30s each leg) × 2</span></li>
+              <li class="exercise-item"><strong>3.</strong> <span data-en="Calf stretch (30s) × 2" data-fa="کشش ساق پا (۳۰s) × ۲">Calf stretch (30s) × 2</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monday -->
+    <div class="day-card">
+      <div class="day-header">
+        <div class="day-title" data-en="Monday" data-fa="دوشنبه">Monday</div>
+        <button class="expand-btn" onclick="toggleWorkoutDetails('monday')">></button>
+      </div>
+      <ul class="task-list">
+        <li><strong data-en="Morning:" data-fa="صبح:">Morning:</strong> <span data-en="Legs & Core + 5 min HIIT" data-fa="Legs & Core + HIIT 5 دقیقه">Legs & Core + 5 min HIIT</span></li>
+      </ul>
+      <div id="monday" class="workout-details">
+        <div class="workout-section">
+          <div class="workout-title" data-en="Main Workout" data-fa="تمرین اصلی">Main Workout</div>
+          <ul class="exercise-list">
+            <li class="exercise-item"><strong>1.</strong> Goblet Squat – 3×12</li>
+            <li class="exercise-item"><strong>2.</strong> Romanian Deadlift (Dumbbells) – 3×10</li>
+            <li class="exercise-item"><strong>3.</strong> Standing Calf Raise (Dumbbells) – 3×15</li>
+            <li class="exercise-item"><strong>4.</strong> Plank: 3×60 <span data-en="seconds" data-fa="ثانیه">seconds</span> <span data-en="or" data-fa="یا">or</span> Reverse Crunch: 3×(15–20)</li>
+          </ul>
+          <div class="hiit-section">
+            <div class="hiit-title" data-en="HIIT (5 minutes)" data-fa="HIIT 5 دقیقه">HIIT (5 minutes)</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="Push-Ups: 20s max reps → 40s rest (3x)" data-fa="Push-Ups: 20s حداکثر تکرار → 40s استراحت (3x)">Push-Ups: 20s max reps → 40s rest (3x)</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="High Knees: 20s fast → 40s rest (3x)" data-fa="High Knees: 20s سریع → 40s استراحت (3x)">High Knees: 20s fast → 40s rest (3x)</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tuesday -->
+    <div class="day-card">
+      <div class="day-header">
+        <div class="day-title" data-en="Tuesday" data-fa="سه‌شنبه">Tuesday</div>
+        <button class="expand-btn" onclick="toggleWorkoutDetails('tuesday')">></button>
+      </div>
+      <ul class="task-list">
+        <li><strong data-en="Morning:" data-fa="صبح:">Morning:</strong> <span data-en="Push + 5 min HIIT" data-fa="Push + HIIT 5 دقیقه">Push + 5 min HIIT</span></li>
+      </ul>
+      <div id="tuesday" class="workout-details">
+        <div class="workout-section">
+          <div class="workout-title" data-en="Main Workout" data-fa="تمرین اصلی">Main Workout</div>
+          <ul class="exercise-list">
+            <li class="exercise-item"><strong>1.</strong> Dumbbell Floor Press – 3×(8–12)</li>
+            <li class="exercise-item"><strong>2.</strong> Seated Dumbbell Shoulder Press – 3×(8–12)</li>
+            <li class="exercise-item"><strong>3.</strong> Bench-Supported Chair Dip – 3×(10–12)</li>
+            <li class="exercise-item"><strong>4.</strong> Assisted Pistol Squat – 3×8 <span data-en="each leg" data-fa="هر پا">each leg</span></li>
+          </ul>
+          <div class="hiit-section">
+            <div class="hiit-title" data-en="HIIT (5 minutes)" data-fa="HIIT 5 دقیقه">HIIT (5 minutes)</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="Jump Lunges: 20s → 40s rest (3x)" data-fa="Jump Lunges: 20s → 40s استراحت (3x)">Jump Lunges: 20s → 40s rest (3x)</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Skater Jumps: 20s → 40s rest (3x)" data-fa="Skater Jumps: 20s → 40s استراحت (3x)">Skater Jumps: 20s → 40s rest (3x)</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wednesday -->
+    <div class="day-card">
+      <div class="day-header">
+        <div class="day-title" data-en="Wednesday" data-fa="چهارشنبه">Wednesday</div>
+        <button class="expand-btn" onclick="toggleWorkoutDetails('wednesday')">></button>
+      </div>
+      <ul class="task-list">
+        <li><strong data-en="Morning:" data-fa="صبح:">Morning:</strong> <span data-en="Pull + 5 min HIIT" data-fa="Pull + HIIT 5 دقیقه">Pull + 5 min HIIT</span></li>
+      </ul>
+      <div id="wednesday" class="workout-details">
+        <div class="workout-section">
+          <div class="workout-title" data-en="Main Workout" data-fa="تمرین اصلی">Main Workout</div>
+          <ul class="exercise-list">
+            <li class="exercise-item"><strong>1.</strong> Pull-Ups (Pronated Grip) – 3×(6–10)</li>
+            <li class="exercise-item"><strong>2.</strong> Single-Arm Dumbbell Row – 3×(10–12) <span data-en="each side" data-fa="هر طرف">each side</span></li>
+            <li class="exercise-item"><strong>3.</strong> Hammer Curl – 3×(10–12)</li>
+            <li class="exercise-item"><strong>4.</strong> Dumbbell Pullover – 3×12</li>
+          </ul>
+          <div class="hiit-section">
+            <div class="hiit-title" data-en="HIIT (5 minutes)" data-fa="HIIT 5 دقیقه">HIIT (5 minutes)</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="Frog Jumps: 20s → 40s rest (3x)" data-fa="Frog Jumps: 20s → 40s استراحت (3x)">Frog Jumps: 20s → 40s rest (3x)</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Cross-Body Mt. Climbers: 20s → 40s rest (3x)" data-fa="Cross-Body Mt. Climbers: 20s → 40s استراحت (3x)">Cross-Body Mt. Climbers: 20s → 40s rest (3x)</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thursday -->
+    <div class="day-card">
+      <div class="day-header">
+        <div class="day-title" data-en="Thursday" data-fa="پنج‌شنبه">Thursday</div>
+        <button class="expand-btn" onclick="toggleWorkoutDetails('thursday')">></button>
+      </div>
+      <ul class="task-list">
+        <li><strong data-en="Morning:" data-fa="صبح:">Morning:</strong> <span data-en="Legs & Core + Light HIIT" data-fa="Legs & Core + HIIT سبک">Legs & Core + Light HIIT</span></li>
+        <li><strong data-en="Evening:" data-fa="عصر:">Evening:</strong> <span data-en="Endurance/Fat-Burning Run" data-fa="دویدن استقامت/چربی‌سوزی">Endurance/Fat-Burning Run</span></li>
+      </ul>
+      <div id="thursday" class="workout-details">
+        <div class="workout-section">
+          <div class="workout-title" data-en="Morning - Main Workout (Reduced Volume)" data-fa="صبح - تمرین اصلی (حجم کاهش یافته)">Morning - Main Workout (Reduced Volume)</div>
+          <ul class="exercise-list">
+            <li class="exercise-item"><strong>1.</strong> Goblet Squat – 3×10</li>
+            <li class="exercise-item"><strong>2.</strong> Romanian Deadlift – 3×8</li>
+            <li class="exercise-item"><strong>3.</strong> Standing Calf Raise – 3×12</li>
+            <li class="exercise-item"><strong>4.</strong> Plank: 3×60 <span data-en="seconds" data-fa="ثانیه">seconds</span> <span data-en="or" data-fa="یا">or</span> Reverse Crunch: 3×(12–15)</li>
+          </ul>
+          <div class="hiit-section">
+            <div class="hiit-title" data-en="Light HIIT (4 minutes)" data-fa="HIIT سبک (۴ دقیقه)">Light HIIT (4 minutes)</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="Jumping Jacks: 20s (70% effort) → 50s rest (2x)" data-fa="Jumping Jacks: 20s (۷۰% توان) → 50s استراحت (2x)">Jumping Jacks: 20s (70% effort) → 50s rest (2x)</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Butt Kicks: 20s → 50s rest (2x)" data-fa="Butt Kicks: 20s → 50s استراحت (2x)">Butt Kicks: 20s → 50s rest (2x)</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="workout-section">
+          <div class="workout-title" data-en="Evening - Endurance/Fat-Burning Run" data-fa="عصر - دویدن استقامت/چربی‌سوزی">Evening - Endurance/Fat-Burning Run</div>
+          <div class="running-section">
+            <div class="running-title" data-en="Warm-up" data-fa="گرم‌کردن">Warm-up</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="5 min very slow run" data-fa="۵ دقیقه دویدن بسیار آرام">5 min very slow run</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Ankle rotations (30s each leg)" data-fa="چرخش مچ پا (۳۰s هر پا)">Ankle rotations (30s each leg)</span></li>
+              <li class="exercise-item"><strong>3.</strong> <span data-en="Jumping Jacks × 15" data-fa="پرش پروانه × ۱۵">Jumping Jacks × 15</span></li>
+            </ul>
+          </div>
+          <div class="running-section">
+            <div class="running-title" data-en="Main Workout" data-fa="تمرین اصلی">Main Workout</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="30 min endurance run (~140 bpm)" data-fa="۳۰ دقیقه دو استقامت (ضربان ~۱۴۰)">30 min endurance run (~140 bpm)</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Fartlek: 2 min fast (80% effort) → 2 min slow × 2 cycles" data-fa="فارتلک: ۲ دقیقه سریع (۸۰٪ توان) → ۲ دقیقه آهسته × ۲ چرخه">Fartlek: 2 min fast (80% effort) → 2 min slow × 2 cycles</span> <span data-en="(10 min)" data-fa="(۱۰ دقیقه)">(10 min)</span></li>
+            </ul>
+          </div>
+          <div class="running-section">
+            <div class="running-title" data-en="Cool-down" data-fa="سردکردن">Cool-down</div>
+            <ul class="exercise-list">
+              <li class="exercise-item"><strong>1.</strong> <span data-en="5 min walk" data-fa="۵ دقیقه پیاده‌روی">5 min walk</span></li>
+              <li class="exercise-item"><strong>2.</strong> <span data-en="Quad stretch (30s each leg) × 2" data-fa="کشش چهارسر ران (۳۰s هر پا) × ۲">Quad stretch (30s each leg) × 2</span></li>
+              <li class="exercise-item"><strong>3.</strong> <span data-en="Sartorius stretch (30s each leg) × 2" data-fa="کشش عضله خیاطه (۳۰s هر پا) × ۲">Sartorius stretch (30s each leg) × 2</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Friday -->
+    <div class="day-card">
+      <div class="day-header">
+        <div class="day-title" data-en="Friday" data-fa="جمعه">Friday</div>
+        <button class="expand-btn" onclick="toggleWorkoutDetails('friday')">></button>
+      </div>
+      <ul class="task-list">
+        <li><strong data-en="Full Rest:" data-fa="استراحت کامل:">Full Rest:</strong> <span data-en="(no strength or running)" data-fa="(بدون تمرین و بدون دویدن)">(no strength or running)</span></li>
+        <li><strong data-en="Focus:" data-fa="تمرکز:">Focus:</strong> <span data-en="sleep, nutrition, stretching & recovery" data-fa="خواب، تغذیه، کشش و ریکاوری">sleep, nutrition, stretching & recovery</span></li>
+      </ul>
+      <div id="friday" class="workout-details">
+        <div class="workout-section">
+          <div class="workout-title" data-en="Full Rest" data-fa="استراحت کامل">Full Rest</div>
+          <div class="rest-section">
+            <div class="rest-title" data-en="Day Program" data-fa="برنامه روز">Day Program</div>
+            <div class="rest-details" data-en="Light walk ≤ 30 min + light stretching + no intense activity!" data-fa="پیاده‌روی آرام ≤ ۳۰ دقیقه + کشش سبک + بدون فعالیت شدید!">Light walk ≤ 30 min + light stretching + no intense activity!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let lang = 'en';
+    const btn = document.getElementById('langBtn');
+    document.body.classList.add('en');
+    btn.textContent = 'Eng'; // تغییر داده شده به Eng
+
+    function toggleLang() {
+      lang = lang === 'en' ? 'fa' : 'en';
+      document.body.classList.toggle('fa', lang === 'fa');
+      document.body.classList.toggle('en', lang === 'en');
+      
+      // تغییر مهم: شرط رو برعکس کردم
+      btn.textContent = lang === 'en' ? 'Eng' : 'Per'; // برعکس شده
+      
+      document.querySelectorAll('[data-en][data-fa]').forEach(el => el.textContent = el.dataset[lang]);
+    }
+
+    function toggleWorkoutDetails(dayId) {
+      const detailsElement = document.getElementById(dayId);
+      const button = event.target;
+      if (detailsElement.classList.contains('active')) {
+        detailsElement.classList.remove('active');
+        button.classList.remove('active');
+      } else {
+        document.querySelectorAll('.workout-details.active').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.expand-btn.active').forEach(el => el.classList.remove('active'));
+        detailsElement.classList.add('active');
+        button.classList.add('active');
+      }
+    }
+
+    // PWA Service Worker Registration (Inline)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swCode = `
+          const CACHE_NAME = 'workout-plan-v2';
+          const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
+          self.addEventListener('install', (e) => {
+            e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
+          });
+          self.addEventListener('fetch', (e) => {
+            e.respondWith(caches.match(e.request).then((r) => r || fetch(e.request)));
+          });
+          self.addEventListener('activate', (e) => {
+            e.waitUntil(caches.keys().then((keys) =>
+              Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+            ));
+          });
+        `;
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl)
+          .then((registration) => console.log('SW registered: ', registration))
+          .catch((registrationError) => console.log('SW registration failed: ', registrationError));
+      });
+    }
+
+    // PWA Install Prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstallButton();
+    });
+    function showInstallButton() {
+      const installBtn = document.createElement('button');
+      installBtn.textContent = '📱 Install App';
+      installBtn.className = 'install-btn';
+      installBtn.onclick = installApp;
+      document.body.appendChild(installBtn);
+    }
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') console.log('User accepted the install prompt');
+          deferredPrompt = null;
+        });
+      }
+    }
+  </script>
+</body>
+</html>

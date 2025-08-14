@@ -343,11 +343,11 @@
       lang = lang === 'en' ? 'fa' : 'en';
       document.body.classList.toggle('fa', lang === 'fa');
       document.body.classList.toggle('en', lang === 'en');
-      
-      // تغییر مهم: شرط رو برعکس کردم
-      btn.textContent = lang === 'en' ? 'Eng' : 'Per'; // برعکس شده
-      
+      btn.textContent = lang === 'en' ? 'Eng' : 'Per';
       document.querySelectorAll('[data-en][data-fa]').forEach(el => el.textContent = el.dataset[lang]);
+      // تغییر عنوان اصلی بر اساس زبان
+      const mainTitle = document.getElementById('main-title');
+      mainTitle.textContent = lang === 'en' ? 'PPL-HIIT Hybrid Workout' : 'برنامه تمرینی ترکیبی PPL-HIIT';
     }
 
     function toggleWorkoutDetails(dayId) {

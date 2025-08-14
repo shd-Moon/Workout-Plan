@@ -1,0 +1,21 @@
+{
+  "name": "PPL-HIIT Workout",
+  "short_name": "Workout",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#1D3456",
+  "theme_color": "#1D3456",
+  "description": "PPL-HIIT Workout Plan",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

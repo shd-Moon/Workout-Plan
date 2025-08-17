@@ -3,7 +3,7 @@
   "short_name": "Workout",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#1D3456",
+  "background_color": "#061930",
   "theme_color": "#1D3456",
   "description": "PPL-HIIT Workout Plan",
   "icons": [

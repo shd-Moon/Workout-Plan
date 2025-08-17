@@ -11,14 +11,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PPL-HIIT Workout">
-  
-  <!-- اضافه شده: لینک به manifest.json -->
-  <link rel="manifest" href="manifest.json">
-  
-  <!-- اضافه شده: آیکون‌ها برای مرورگرهای مختلف -->
-  <link rel="icon" href="icon-192.png" sizes="192x192">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <meta name="msapplication-square150x150logo" content="icon-192.png">
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -43,15 +35,74 @@
     .container{width:100%;max-width:680px;display:flex;flex-direction:column;gap:1.5rem;position:relative;text-align:left}
     body.fa .container{text-align:right}
 
-    /* دکمه تغییر زبان همیشه بالا-راست */
-    .lang-btn{
-      position:absolute;top:-4rem;right:0;background:var(--accent);color:var(--text);
-      border:none;padding:.4rem .9rem;border-radius:6px;font-size:.9rem;cursor:pointer;
-      transition:transform .2s;left:auto !important
+    /* Language Switcher */
+    .lang-switcher {
+      position: absolute;
+      top: -4rem;
+      right: 0;
+      z-index: 100;
     }
-    .lang-btn:hover{transform:scale(1.05)}
+    .lang-btn {
+      background: var(--card);
+      color: var(--text);
+      border: none;
+      padding: .4rem .9rem;
+      border-radius: 6px;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    }
+    .lang-btn:hover {
+      background: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,.2);
+    }
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      background: var(--card);
+      border-radius: 6px;
+      overflow: hidden;
+      min-width: 120px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: all .2s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,.2);
+    }
+    .lang-menu.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .lang-option {
+      padding: .45rem .9rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: all .15s ease;
+      font-size: .85rem;
+      font-weight: 500;
+    }
+    .lang-option:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    .lang-option.selected {
+      background: var(--accent);
+      color: #fff;
+    }
 
-    h1{font-size:1.8rem;font-weight:600;text-align:center;letter-spacing:1px}
+    h1{
+      font-size:1.8rem;
+      font-weight:600;
+      text-align:center;
+      letter-spacing:1px;
+      margin-top:0.5rem;
+      margin-bottom:1.2rem;
+    }
     .day-card{background:var(--card);border-radius:12px;padding:1.5rem 2rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:0 4px 12px rgba(0,0,0,.25);transition:transform .3s,box-shadow .3s}
     .day-card:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,.35)}
     .day-header{display:flex;justify-content:space-between;align-items:center}
@@ -88,7 +139,13 @@
 </head>
 <body>
   <div class="container">
-    <button id="langBtn" class="lang-btn" onclick="toggleLang()">Eng</button>
+    <div class="lang-switcher">
+      <button id="langBtn" class="lang-btn" onclick="toggleLangMenu()">Eng</button>
+      <div id="langMenu" class="lang-menu">
+        <div class="lang-option" data-lang="en" onclick="selectLang('en')">English</div>
+        <div class="lang-option" data-lang="fa" onclick="selectLang('fa')">Persian</div>
+      </div>
+    </div>
     <h1 id="main-title">PPL-HIIT Hybrid Workout</h1>
 
     <!-- Saturday -->
@@ -343,20 +400,33 @@
 
   <script>
     let lang = 'en';
-    const btn = document.getElementById('langBtn');
+    const langBtn = document.getElementById('langBtn');
+    const langMenu = document.getElementById('langMenu');
     document.body.classList.add('en');
-    btn.textContent = 'Eng'; // تغییر داده شده به Eng
 
-    function toggleLang() {
-      lang = lang === 'en' ? 'fa' : 'en';
+    function toggleLangMenu() {
+      langMenu.classList.toggle('show');
+    }
+
+    function selectLang(selected) {
+      lang = selected;
       document.body.classList.toggle('fa', lang === 'fa');
       document.body.classList.toggle('en', lang === 'en');
-      btn.textContent = lang === 'en' ? 'Eng' : 'Per';
+      langBtn.textContent = lang === 'en' ? 'Eng' : 'Per';
+      document.querySelectorAll('.lang-option').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.lang === lang);
+      });
+      langMenu.classList.remove('show');
       document.querySelectorAll('[data-en][data-fa]').forEach(el => el.textContent = el.dataset[lang]);
-      // تغییر عنوان اصلی بر اساس زبان
       const mainTitle = document.getElementById('main-title');
       mainTitle.textContent = lang === 'en' ? 'PPL-HIIT Hybrid Workout' : 'برنامه تمرینی ترکیبی PPL-HIIT';
     }
+
+    document.addEventListener('click', (e) => {
+      if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+        langMenu.classList.remove('show');
+      }
+    });
 
     function toggleWorkoutDetails(dayId) {
       const detailsElement = document.getElementById(dayId);
@@ -376,15 +446,8 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         const swCode = `
-          const CACHE_NAME = 'workout-plan-v3';
-          // اضافه شدن manifest و آیکون‌ها
-          const ASSETS = [
-            '/',
-            '/index.html',
-            '/manifest.json',
-            '/icon-192.png',
-            '/icon-512.png'
-          ];
+          const CACHE_NAME = 'workout-plan-v2';
+          const ASSETS = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
           self.addEventListener('install', (e) => {
             e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
           });
